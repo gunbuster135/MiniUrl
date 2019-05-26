@@ -13,7 +13,8 @@ import static org.valid4j.Assertive.require;
 
 @Service
 public class UrlShortenerService {
-    private final static Duration DEFAULT_EXPIRATION = Duration.ofDays(365 * 2); //approx...
+    //ttl is enforced, so we'll need to define a default TTL
+    public final static Duration DEFAULT_TTL = Duration.ofDays(365 * 2); //approx...
     private final Hasher hasher;
     private final UrlRepository urlRepository;
 
@@ -23,13 +24,22 @@ public class UrlShortenerService {
         this.urlRepository = require(urlRepository, notNullValue());
     }
 
+    /**
+     * Hashes & stores a URL wrapped in a UrlRequestBody. Will normalize the URL
+     * to reduce "duplicate" urls that may differ but point to same location.
+     * TTL is optional but will use a default TTL of ~2 years if not provided.
+     *
+     * @param urlRequestBody Request body of a url to be hashed
+     * @return A domain object representing the hashed url
+     */
     public Mono<ShortenedUrl> hashUrl(UrlRequestBody urlRequestBody) {
         URI normalizedUrl = urlRequestBody.getUrl()
                                           .normalize();
         String hashedUrl = hasher.hash(normalizedUrl);
+
         Duration ttl = urlRequestBody.getTtl()
                                      .map(Duration::ofMillis)
-                                     .orElse(DEFAULT_EXPIRATION);
+                                     .orElse(DEFAULT_TTL);
 
         return urlRepository.store(new ShortenedUrl(normalizedUrl, hashedUrl, ttl))
                             .log()
