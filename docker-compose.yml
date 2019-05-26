@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  miniurl:
+    image: miniurl:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - redis-net
+    depends_on:
+      - redis
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+
+  redis:
+    image: redis:5.0.5
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    networks:
+      - redis-net
+    volumes:
+      - redis-data:/data
+
+networks:
+  redis-net:
+
+volumes:
+  redis-data:

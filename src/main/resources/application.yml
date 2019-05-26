@@ -1,5 +1,2 @@
 server:
   port: 8080
-
-miniurl:
-  base-url: localhost:8080

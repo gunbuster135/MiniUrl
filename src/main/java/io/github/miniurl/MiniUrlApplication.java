@@ -21,5 +21,4 @@ public class MiniUrlApplication {
             (ReactiveRedisConnectionFactory connectionFactory) {
         return new ReactiveRedisTemplate<>(connectionFactory, RedisSerializationContext.string());
     }
-
 }
