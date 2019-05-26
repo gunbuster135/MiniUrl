@@ -3,6 +3,7 @@ package io.github.miniurl.controllers;
 import io.github.miniurl.api.UrlRequestBody;
 import io.github.miniurl.api.UrlResponseBody;
 import io.github.miniurl.urlshortener.UrlShortenerService;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class UrlController {
         this.urlShortener = require(urlShortener, notNullValue());
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<UrlResponseBody> hashUrl(@RequestBody @Valid UrlRequestBody request,
                                          ServerHttpRequest serverRequest) {
         return urlShortener.hashUrl(request)

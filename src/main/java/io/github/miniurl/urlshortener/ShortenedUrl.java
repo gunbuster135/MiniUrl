@@ -1,6 +1,8 @@
 package io.github.miniurl.urlshortener;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.net.URI;
 import java.time.Duration;
@@ -10,7 +12,7 @@ import static org.valid4j.Assertive.ensure;
 import static org.valid4j.Assertive.require;
 import static org.valid4j.matchers.ArgumentMatchers.notEmptyString;
 
-@Getter
+@Data
 public class ShortenedUrl {
     private final URI originalUrl;
     private final String hashedUrl;

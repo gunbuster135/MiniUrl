@@ -10,10 +10,10 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 @SpringBootApplication
 @Configuration
-public class MiniurlApplication {
+public class MiniUrlApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MiniurlApplication.class, args);
+        SpringApplication.run(MiniUrlApplication.class, args);
     }
 
     @Bean
