@@ -22,7 +22,7 @@ Or even easier with `docker-compose` if you don't feel like setting up redis (af
 ### Usage
 This section assumes you are running MiniUrl locally on port `8080` 
 
-To hash a URL \
+To hash a URL
 ```
 curl --header "Content-Type: application/json" \
       --request POST \
