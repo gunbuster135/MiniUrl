@@ -16,5 +16,10 @@ public class UrlRequestBody {
     @NotNull
     private URI url;
 
-    private Optional<@Positive Long> ttl;
+    @Positive
+    private Long ttl;
+
+    public Optional<Long> getTtl() {
+        return Optional.ofNullable(ttl);
+    }
 }
