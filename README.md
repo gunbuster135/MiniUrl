@@ -16,7 +16,7 @@ To run the application after just building \
 If you want to run a docker container (after running `jib:dockerBuild`) \
 ```docker run -p 8080:8080 -t miniurl:latest```
 
-Or even easier with `docker-compose` if you don't feel like setting up redis (after running `jib:dockerBuild`) \
+Or even easier with `docker-compose` if you don't feel like setting up redis  \
 ```docker-compose up```
 
 ### Usage
