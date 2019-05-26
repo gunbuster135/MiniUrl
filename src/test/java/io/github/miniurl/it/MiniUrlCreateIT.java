@@ -39,6 +39,7 @@ public class MiniUrlCreateIT extends BaseIT {
                                           .returnResult(UrlResponseBody.class)
                                           .getResponseBody()
                                           .blockFirst();
+
         //Verify response
         assertThat(result, notNullValue());
         assertThat(result.getUrl(), notNullValue());
