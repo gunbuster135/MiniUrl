@@ -46,6 +46,12 @@ public class UrlShortenerService {
                             .onErrorMap(throwable -> new UrlShortenerException("Failed to store hashed URL", throwable));
     }
 
+    /**
+     * Returns a URL by providing a hash, triggering a lookup in the persistent data store
+     *
+     * @param hash Hash generated when calling hashUrl()
+     * @return A mono that may or may not contain an URI
+     */
     public Mono<URI> getUri(String hash) {
         return Mono.just(hash)
                    .log()

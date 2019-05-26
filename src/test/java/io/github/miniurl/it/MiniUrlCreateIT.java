@@ -30,7 +30,7 @@ public class MiniUrlCreateIT extends BaseIT {
     public void shouldCreateHashedUrl() {
         final URI uri = URI.create("www.google.com");
 
-        final UrlRequestBody request = new UrlRequestBody(uri, Optional.of(15_000L));
+        final UrlRequestBody request = new UrlRequestBody(uri, 15_000L);
 
         UrlResponseBody result = webClient.post()
                                           .uri("/")

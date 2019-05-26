@@ -37,7 +37,7 @@ public class UrlShortenerServiceTest {
     public void shouldCreateValidShortenedUrl() {
 
         UrlShortenerService urlShortenerService = new UrlShortenerService(hasher, urlRepository);
-        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(DEFAULT_URI, Optional.empty()))
+        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(DEFAULT_URI, null))
                                                        .block();
 
         assertThat(shortenedUrl, notNullValue());
@@ -51,7 +51,7 @@ public class UrlShortenerServiceTest {
         final Long ttl = Duration.ofHours(5).toMillis();
 
         UrlShortenerService urlShortenerService = new UrlShortenerService(hasher, urlRepository);
-        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(DEFAULT_URI, Optional.of(ttl)))
+        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(DEFAULT_URI, ttl))
                                                        .block();
 
         assertThat(shortenedUrl, notNullValue());
