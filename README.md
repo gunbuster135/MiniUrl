@@ -3,10 +3,10 @@ A reactive implementation of a URL minifier
 
 ### Build
 To build & run all tests \
-```mvn verify```
+```/.mvnw verify```
 
 You can also build a docker image by appending `jib:dockerBuild`\
-```mvn verify jib:dockerBuild```
+```/.mvnw verify jib:dockerBuild```
 
 ### Running the application
 MiniUrl requires a Redis server running locally on port `6379`
