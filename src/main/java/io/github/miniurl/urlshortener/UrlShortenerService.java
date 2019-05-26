@@ -31,9 +31,8 @@ public class UrlShortenerService {
                                      .map(Duration::ofMillis)
                                      .orElse(DEFAULT_EXPIRATION);
 
-        return Mono.just(new ShortenedUrl(normalizedUrl, hashedUrl, ttl))
-                   .log()
-                   .doOnNext(urlRepository::store)
-                   .onErrorMap(throwable -> new UrlShortenerException("Failed to store hashed URL", throwable));
+        return urlRepository.store(new ShortenedUrl(normalizedUrl, hashedUrl, ttl))
+                            .log()
+                            .onErrorMap(throwable -> new UrlShortenerException("Failed to store hashed URL", throwable));
     }
 }

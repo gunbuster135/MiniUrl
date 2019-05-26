@@ -18,8 +18,9 @@ public class UrlRepository {
         this.redisTemplate = require(redisTemplate, notNullValue());
     }
 
-    public Mono<Boolean> store(ShortenedUrl shortenedUrl) {
+    public Mono<ShortenedUrl> store(ShortenedUrl shortenedUrl) {
         return redisTemplate.opsForValue()
-                            .set(shortenedUrl.getHashedUrl(), shortenedUrl.getOriginalUrl().toString(), shortenedUrl.getTtl());
+                            .set(shortenedUrl.getHashedUrl(), shortenedUrl.getOriginalUrl().toString(), shortenedUrl.getTtl())
+                            .then(Mono.just(shortenedUrl));
     }
 }

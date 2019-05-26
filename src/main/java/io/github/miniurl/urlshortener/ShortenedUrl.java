@@ -1,8 +1,6 @@
 package io.github.miniurl.urlshortener;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
 
 import java.net.URI;
 import java.time.Duration;
