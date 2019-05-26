@@ -6,6 +6,8 @@ import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.valid4j.Assertive.require;
 
@@ -22,5 +24,11 @@ public class UrlRepository {
         return redisTemplate.opsForValue()
                             .set(shortenedUrl.getHashedUrl(), shortenedUrl.getOriginalUrl().toString(), shortenedUrl.getTtl())
                             .then(Mono.just(shortenedUrl));
+    }
+
+    public Mono<URI> fetch(String hash) {
+        return redisTemplate.opsForValue()
+                            .get(hash)
+                            .map(URI::create);
     }
 }

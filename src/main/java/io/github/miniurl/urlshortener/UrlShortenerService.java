@@ -45,4 +45,10 @@ public class UrlShortenerService {
                             .log()
                             .onErrorMap(throwable -> new UrlShortenerException("Failed to store hashed URL", throwable));
     }
+
+    public Mono<URI> getUri(String hash) {
+        return Mono.just(hash)
+                   .log()
+                   .flatMap(urlRepository::fetch);
+    }
 }

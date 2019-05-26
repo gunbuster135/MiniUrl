@@ -14,8 +14,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 public class UrlShortenerServiceTest {
+    private final static URI DEFAULT_URI = URI.create("www.google.com");
     private Hasher hasher;
     private UrlRepository urlRepository;
 
@@ -27,35 +29,43 @@ public class UrlShortenerServiceTest {
         Mockito.when(hasher.hash(any())).thenReturn("hash");
         Mockito.when(urlRepository.store(any()))
                .thenAnswer(invocation -> Mono.just(invocation.getArgument(0))); //echo back same response
+        Mockito.when(urlRepository.fetch(eq("hash")))
+               .thenReturn(Mono.just(URI.create("www.google.com")));
     }
 
     @Test
     public void shouldCreateValidShortenedUrl() {
-        final URI uri = URI.create("www.google.com");
 
         UrlShortenerService urlShortenerService = new UrlShortenerService(hasher, urlRepository);
-        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(uri, Optional.empty()))
+        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(DEFAULT_URI, Optional.empty()))
                                                        .block();
 
         assertThat(shortenedUrl, notNullValue());
         assertThat(shortenedUrl.getHashedUrl(), equalTo("hash"));
-        assertThat(shortenedUrl.getOriginalUrl(), equalTo(uri));
+        assertThat(shortenedUrl.getOriginalUrl(), equalTo(DEFAULT_URI));
         assertThat(shortenedUrl.getTtl(), equalTo(UrlShortenerService.DEFAULT_TTL));
     }
 
-
     @Test
     public void shouldCreateValidShortenedUrlWithProvidedTtl() {
-        final URI uri = URI.create("www.google.com");
         final Long ttl = Duration.ofHours(5).toMillis();
 
         UrlShortenerService urlShortenerService = new UrlShortenerService(hasher, urlRepository);
-        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(uri, Optional.of(ttl)))
+        ShortenedUrl shortenedUrl = urlShortenerService.hashUrl(new UrlRequestBody(DEFAULT_URI, Optional.of(ttl)))
                                                        .block();
 
         assertThat(shortenedUrl, notNullValue());
         assertThat(shortenedUrl.getHashedUrl(), equalTo("hash"));
-        assertThat(shortenedUrl.getOriginalUrl(), equalTo(uri));
+        assertThat(shortenedUrl.getOriginalUrl(), equalTo(DEFAULT_URI));
         assertThat(shortenedUrl.getTtl(), equalTo(Duration.ofMillis(ttl)));
+    }
+
+    @Test
+    public void shouldGetValidUrl() {
+        UrlShortenerService urlShortenerService = new UrlShortenerService(hasher, urlRepository);
+        URI result = urlShortenerService.getUri("hash")
+                                        .block();
+
+        assertThat(result, equalTo(DEFAULT_URI));
     }
 }
